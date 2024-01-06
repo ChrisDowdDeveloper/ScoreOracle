@@ -191,5 +191,43 @@ public class SportControllerIntegrationTest {
         );
     }
 
-    
+    @Test
+    public void testThatPartialUpdateExistingSportReturnsHttp200() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        SportDto sportDto = TestDataUtil.createTestSportDto();
+        sportDto.setSport_name("UPDATED");
+        String sportDtoJson = objectMapper.writeValueAsString(sportDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sportDtoJson)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingSportReturnsUpdatedSport() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        SportDto sportDto = TestDataUtil.createTestSportDto();
+        sportDto.setSport_name("UPDATED");
+        String sportDtoJson = objectMapper.writeValueAsString(sportDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sportDtoJson)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_name").value("UPDATED")
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.league").value(sportDto.getLeague())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath(".logo_url").value(sportDto.getLogo_url())
+        );
+    }
 }

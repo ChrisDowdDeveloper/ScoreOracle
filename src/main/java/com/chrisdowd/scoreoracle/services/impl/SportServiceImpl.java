@@ -22,7 +22,16 @@ public class SportServiceImpl implements SportService{
 
     @Override
     public SportEntity save(SportEntity sportEntity) {
-        return sportRepository.save(sportEntity);
+        if(sportEntity.getSport_id() != null) {
+            return sportRepository.findById(sportEntity.getSport_id()).map(existingSport -> {
+                existingSport.setSport_name(sportEntity.getSport_name());
+                existingSport.setLeague(sportEntity.getLeague());
+                existingSport.setLogo_url(sportEntity.getLogo_url());
+                return sportRepository.save(existingSport);
+            }).orElseThrow(() -> new RuntimeException("Sport not found with id: " + sportEntity.getSport_id()));
+        } else {
+            return sportRepository.save(sportEntity);
+        }
     }
 
     @Override
@@ -39,5 +48,18 @@ public class SportServiceImpl implements SportService{
     public boolean isExists(Long sport_id) {
         return sportRepository.existsById(sport_id);
     }
+
+    @Override
+    public SportEntity partialUpdate(Long sport_id, SportEntity sportEntity) {
+        sportEntity.setSport_id(sport_id);
+        
+        return sportRepository.findById(sport_id).map(existingSport -> {
+            Optional.ofNullable(sportEntity.getSport_name()).ifPresent(existingSport::setSport_name);
+            Optional.ofNullable(sportEntity.getLeague()).ifPresent(existingSport::setLeague);
+            Optional.ofNullable(sportEntity.getLogo_url()).ifPresent(existingSport::setLogo_url);
+            return sportRepository.save(existingSport);
+        }).orElseThrow(() -> new RuntimeException("Sport does not exist"));
+    }
+
 
 }

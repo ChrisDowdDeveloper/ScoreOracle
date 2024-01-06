@@ -14,5 +14,7 @@ public interface SportService {
     Optional<SportEntity> findOne(Long sport_id);
 
     boolean isExists(Long sport_id);
-    
+
+    SportEntity partialUpdate(Long sport_id, SportEntity sportEntity);
+
 }
