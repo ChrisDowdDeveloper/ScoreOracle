@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "sports")
-public class SportsEntity {
+public class SportEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sport_id_seq")
@@ -24,8 +24,8 @@ public class SportsEntity {
 
     private String sport_name;
 
-    private String description;
+    private String league;
 
-    private String logoUrl;
+    private String logo_url;
 
 }

@@ -15,8 +15,8 @@ public class SportDto {
 
     private String sport_name;
 
-    private String description;
+    private String league;
 
-    private String logoUrl;
+    private String logo_url;
 
 }
