@@ -14,24 +14,30 @@ import com.chrisdowd.scoreoracle.services.SportService;
 @Service
 public class SportServiceImpl implements SportService{
     
-    private SportRepository sportRespository;
+    private SportRepository sportRepository;
 
-    public SportServiceImpl(SportRepository sportRespository) {
-        this.sportRespository = sportRespository;
+    public SportServiceImpl(SportRepository sportRepository) {
+        this.sportRepository = sportRepository;
     }
 
     @Override
     public SportEntity save(SportEntity sportEntity) {
-        return sportRespository.save(sportEntity);
+        return sportRepository.save(sportEntity);
     }
 
     @Override
     public List<SportEntity> findAll() {
-        return StreamSupport.stream(sportRespository.findAll().spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(sportRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
     @Override
     public Optional<SportEntity> findOne(Long sport_id) {
-        return sportRespository.findById(sport_id);
+        return sportRepository.findById(sport_id);
     }
+
+    @Override
+    public boolean isExists(Long sport_id) {
+        return sportRepository.existsById(sport_id);
+    }
+
 }

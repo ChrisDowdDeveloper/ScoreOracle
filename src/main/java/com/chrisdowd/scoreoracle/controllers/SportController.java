@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,4 +51,18 @@ public class SportController {
             return new ResponseEntity<>(sportDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @PutMapping("/sports/{sport_id}")
+    public ResponseEntity<SportDto> updateSport(@PathVariable("sport_id") Long sport_id, @RequestBody SportDto sportDto) {
+
+        if(!sportService.isExists(sport_id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        sportDto.setSport_id(sport_id);
+        SportEntity sportEntity = sportMapper.mapFrom(sportDto);
+        SportEntity savedSportEntity = sportService.save(sportEntity);
+        return new ResponseEntity<>(sportMapper.mapTo(savedSportEntity), HttpStatus.OK);
+    }
+
 }

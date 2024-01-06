@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.chrisdowd.scoreoracle.TestDataUtil;
+import com.chrisdowd.scoreoracle.domain.dto.SportDto;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
 import com.chrisdowd.scoreoracle.services.SportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -137,4 +138,58 @@ public class SportControllerIntegrationTest {
             MockMvcResultMatchers.jsonPath(".logo_url").value("cdowd")
         );
     }
+    
+    @Test
+    public void testThatFullUpdateSportsSuccessfullyReturnsHttp200() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        SportDto sportDto = TestDataUtil.createTestSportDto();
+        String sportDtoJson = objectMapper.writeValueAsString(sportDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sportDtoJson)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatFullUpdateSportsReturnsHttpStatus404WhenNoSportExists() throws Exception {
+        SportDto sport = TestDataUtil.createTestSportDto();
+        String sportJson = objectMapper.writeValueAsString(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/sports/15641651")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sportJson)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testThatFullUpdateUpdatesExistingSport() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        SportDto sportDto = TestDataUtil.createTestSportDto();
+        sportDto.setSport_id(savedSport.getSport_id());
+
+        String sportDtoUpdateJson = objectMapper.writeValueAsString(sportDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sportDtoUpdateJson)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_name").value(sportDto.getSport_name())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.league").value(sportDto.getLeague())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath(".logo_url").value(sportDto.getLogo_url())
+        );
+    }
+
+    
 }

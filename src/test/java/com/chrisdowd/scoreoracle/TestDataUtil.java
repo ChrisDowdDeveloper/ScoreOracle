@@ -1,5 +1,6 @@
 package com.chrisdowd.scoreoracle;
 
+import com.chrisdowd.scoreoracle.domain.dto.SportDto;
 import com.chrisdowd.scoreoracle.domain.dto.UserDto;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
 import com.chrisdowd.scoreoracle.domain.entities.UserEntity;
@@ -61,6 +62,14 @@ public class TestDataUtil {
         return SportEntity.builder()
             .sport_name("Basketball")
             .league("National Basketball Association")
+            .logo_url("cdowd")
+            .build();
+    }
+
+    public static SportDto createTestSportDto() {
+        return SportDto.builder()
+            .sport_name("Football")
+            .league("National Football League")
             .logo_url("cdowd")
             .build();
     }

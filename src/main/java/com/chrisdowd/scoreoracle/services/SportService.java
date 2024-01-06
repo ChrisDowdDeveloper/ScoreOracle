@@ -12,5 +12,7 @@ public interface SportService {
     List<SportEntity> findAll();
 
     Optional<SportEntity> findOne(Long sport_id);
+
+    boolean isExists(Long sport_id);
     
 }

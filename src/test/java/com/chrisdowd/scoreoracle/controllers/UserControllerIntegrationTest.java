@@ -148,7 +148,7 @@ public class UserControllerIntegrationTest {
         String userDtoJson = objectMapper.writeValueAsString(testUserDto);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/users/" + savedUser.getUser_id())
+            MockMvcRequestBuilders.put("/users/" + savedUser.getUser_id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userDtoJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -160,7 +160,7 @@ public class UserControllerIntegrationTest {
         String userJson = objectMapper.writeValueAsString(user);
         
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/users/156165")
+            MockMvcRequestBuilders.put("/users/156165")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJson)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());

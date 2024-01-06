@@ -79,4 +79,14 @@ public class SportIntegrationTest {
             entityManager.flush();
         });
     }
+
+    @Test
+    public void testThatUpdateChangesSport() {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        sport.setSport_name("UPDATED");
+        underTest.save(sport);
+        Optional<SportEntity> result = underTest.findById(sport.getSport_id());
+        assertTrue(result.isPresent());
+        assertEquals(sport, result.get());
+    }
 }
