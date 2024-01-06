@@ -41,7 +41,7 @@ public class SportIntegrationTest {
     public void testThatSportCanBeCreatedAndRecalled() {
         SportEntity sport = TestDataUtil.createTestSportA();
         underTest.save(sport);
-        Optional<SportEntity> result = underTest.findById(sport.getSport_id());
+        Optional<SportEntity> result = underTest.findById(sport.getSportId());
         assertTrue(result.isPresent());
         assertEquals(sport, result.get());
     }
@@ -83,9 +83,9 @@ public class SportIntegrationTest {
     @Test
     public void testThatUpdateChangesSport() {
         SportEntity sport = TestDataUtil.createTestSportA();
-        sport.setSport_name("UPDATED");
+        sport.setSportName("UPDATED");
         underTest.save(sport);
-        Optional<SportEntity> result = underTest.findById(sport.getSport_id());
+        Optional<SportEntity> result = underTest.findById(sport.getSportId());
         assertTrue(result.isPresent());
         assertEquals(sport, result.get());
     }
@@ -95,8 +95,8 @@ public class SportIntegrationTest {
         SportEntity sport = TestDataUtil.createTestSportA();
         underTest.save(sport);
 
-        underTest.deleteById(sport.getSport_id());
-        Optional<SportEntity> result = underTest.findById(sport.getSport_id());
+        underTest.deleteById(sport.getSportId());
+        Optional<SportEntity> result = underTest.findById(sport.getSportId());
         assertTrue(result.isEmpty());
     }
 }

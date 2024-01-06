@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity save(UserEntity userEntity) {
-        if(userEntity.getUser_id() != null) {
-            return userRepository.findById(userEntity.getUser_id()).map(existingUser -> {
+        if(userEntity.getUserId() != null) {
+            return userRepository.findById(userEntity.getUserId()).map(existingUser -> {
                 existingUser.setUsername(userEntity.getUsername());
                 existingUser.setEmail(userEntity.getEmail());
                 existingUser.setPassword(userEntity.getPassword());
                 return userRepository.save(existingUser);
-            }).orElseThrow(() -> new RuntimeException("User not found with id: " + userEntity.getUser_id()));
+            }).orElseThrow(() -> new RuntimeException("User not found with id: " + userEntity.getUserId()));
         } else {
             return userRepository.save(userEntity);
         }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity partialUpdate(Long id, UserEntity userEntity) {
-        userEntity.setUser_id(id);
+        userEntity.setUserId(id);
         userEntity.setCreatedAt(userEntity.getCreatedAt());
 
         return userRepository.findById(id).map(existingUser -> {

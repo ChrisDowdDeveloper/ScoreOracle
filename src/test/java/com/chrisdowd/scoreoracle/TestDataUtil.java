@@ -44,33 +44,33 @@ public class TestDataUtil {
 
     public static SportEntity createTestSportA() {
         return SportEntity.builder()
-            .sport_name("Football")
+            .sportName("Football")
             .league("National Football League")
-            .logo_url("cdowd")
+            .logoUrl("cdowd")
             .build();
     }
 
     public static SportEntity createTestSportB() {
         return SportEntity.builder()
-            .sport_name("Hockey")
+            .sportName("Hockey")
             .league("National Hockey League")
-            .logo_url("cdowd")
+            .logoUrl("cdowd")
             .build();
     }
 
     public static SportEntity createTestSportC() {
         return SportEntity.builder()
-            .sport_name("Basketball")
+            .sportName("Basketball")
             .league("National Basketball Association")
-            .logo_url("cdowd")
+            .logoUrl("cdowd")
             .build();
     }
 
     public static SportDto createTestSportDto() {
         return SportDto.builder()
-            .sport_name("Football")
+            .sportName("Football")
             .league("National Football League")
-            .logo_url("cdowd")
+            .logoUrl("cdowd")
             .build();
     }
 }

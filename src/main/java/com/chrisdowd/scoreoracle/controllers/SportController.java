@@ -45,43 +45,43 @@ public class SportController {
         return sports.stream().map(sportMapper::mapTo).collect(Collectors.toList());
     }
 
-    @GetMapping("/sports/{sport_id}")
-    public ResponseEntity<SportDto> getSportById(@PathVariable("sport_id") Long sport_id) {
-        Optional<SportEntity> foundSport = sportService.findOne(sport_id);
+    @GetMapping("/sports/{sportId}")
+    public ResponseEntity<SportDto> getSportById(@PathVariable("sportId") Long sportId) {
+        Optional<SportEntity> foundSport = sportService.findOne(sportId);
         return foundSport.map(sportEntity -> {
             SportDto sportDto = sportMapper.mapTo(sportEntity);
             return new ResponseEntity<>(sportDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/sports/{sport_id}")
-    public ResponseEntity<SportDto> updateSport(@PathVariable("sport_id") Long sport_id, @RequestBody SportDto sportDto) {
+    @PutMapping("/sports/{sportId}")
+    public ResponseEntity<SportDto> updateSport(@PathVariable("sportId") Long sportId, @RequestBody SportDto sportDto) {
 
-        if(!sportService.isExists(sport_id)) {
+        if(!sportService.isExists(sportId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        sportDto.setSport_id(sport_id);
+        sportDto.setSportId(sportId);
         SportEntity sportEntity = sportMapper.mapFrom(sportDto);
         SportEntity savedSportEntity = sportService.save(sportEntity);
         return new ResponseEntity<>(sportMapper.mapTo(savedSportEntity), HttpStatus.OK);
     }
 
-    @PatchMapping("/sports/{sport_id}")
-    public ResponseEntity<SportDto> partialUpdate(@PathVariable("sport_id") Long sport_id, @RequestBody SportDto sportDto) {
+    @PatchMapping("/sports/{sportId}")
+    public ResponseEntity<SportDto> partialUpdate(@PathVariable("sportId") Long sportId, @RequestBody SportDto sportDto) {
 
-        if(!sportService.isExists(sport_id)) {
+        if(!sportService.isExists(sportId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         SportEntity sportEntity = sportMapper.mapFrom(sportDto);
-        SportEntity savedSportEntity = sportService.partialUpdate(sport_id, sportEntity);
+        SportEntity savedSportEntity = sportService.partialUpdate(sportId, sportEntity);
         return new ResponseEntity<>(sportMapper.mapTo(savedSportEntity), HttpStatus.OK);
     }
 
-    @DeleteMapping("/sports/{sport_id}")
-    public ResponseEntity<Void> deleteSport(@PathVariable("sport_id") Long sport_id) {
-        sportService.delete(sport_id);
+    @DeleteMapping("/sports/{sportId}")
+    public ResponseEntity<Void> deleteSport(@PathVariable("sportId") Long sportId) {
+        sportService.delete(sportId);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 

@@ -11,12 +11,12 @@ public interface SportService {
 
     List<SportEntity> findAll();
 
-    Optional<SportEntity> findOne(Long sport_id);
+    Optional<SportEntity> findOne(Long sportId);
 
-    boolean isExists(Long sport_id);
+    boolean isExists(Long sportId);
 
-    SportEntity partialUpdate(Long sport_id, SportEntity sportEntity);
+    SportEntity partialUpdate(Long sportId, SportEntity sportEntity);
 
-    void delete(Long sport_id);
+    void delete(Long sportId);
 
 }

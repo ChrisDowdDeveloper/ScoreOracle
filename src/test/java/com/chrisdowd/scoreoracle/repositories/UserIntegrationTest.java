@@ -42,7 +42,7 @@ public class UserIntegrationTest {
     public void testThatUserCanBeCreatedAndRecalled() {
         UserEntity user = TestDataUtil.createTestUserA();
         underTest.save(user);
-        Optional<UserEntity> result = underTest.findById(user.getUser_id());
+        Optional<UserEntity> result = underTest.findById(user.getUserId());
         assertTrue(result.isPresent());
         assertEquals(user, result.get());
     }
@@ -87,7 +87,7 @@ public class UserIntegrationTest {
         UserEntity user = TestDataUtil.createTestUserA();
         user.setUsername("UPDATED");
         underTest.save(user);
-        Optional<UserEntity> result = underTest.findById(user.getUser_id());
+        Optional<UserEntity> result = underTest.findById(user.getUserId());
         assertTrue(result.isPresent());
         assertEquals(user, result.get());
     }
@@ -97,8 +97,8 @@ public class UserIntegrationTest {
         UserEntity user = TestDataUtil.createTestUserA();
         underTest.save(user);
 
-        underTest.deleteById(user.getUser_id());
-        Optional<UserEntity> result = underTest.findById(user.getUser_id());
+        underTest.deleteById(user.getUserId());
+        Optional<UserEntity> result = underTest.findById(user.getUserId());
         assertTrue(result.isEmpty());
     }
 

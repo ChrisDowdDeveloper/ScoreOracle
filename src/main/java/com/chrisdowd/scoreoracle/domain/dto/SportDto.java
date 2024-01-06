@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SportDto {
     
-    private Long sport_id;
+    private Long sportId;
 
-    private String sport_name;
+    private String sportName;
 
     private String league;
 
-    private String logo_url;
+    private String logoUrl;
 
 }

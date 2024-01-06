@@ -39,7 +39,7 @@ public class SportControllerIntegrationTest {
     @Test
     public void testThatCreateSportSuccessfullyReturnsHttp201Created() throws Exception {
         SportEntity sport = TestDataUtil.createTestSportA();
-        sport.setSport_id(null);
+        sport.setSportId(null);
         String sportJson = objectMapper.writeValueAsString(sport);
 
         mockMvc.perform(
@@ -54,7 +54,7 @@ public class SportControllerIntegrationTest {
     @Test
     public void testThatCreateSportSuccessfullyReturnsSavedSport() throws Exception {
         SportEntity sport = TestDataUtil.createTestSportA();
-        sport.setSport_id(null);
+        sport.setSportId(null);
         String sportJson = objectMapper.writeValueAsString(sport);
 
         mockMvc.perform(
@@ -62,13 +62,13 @@ public class SportControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(sportJson)
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_id").isNumber()
+            MockMvcResultMatchers.jsonPath("$.sportId").isNumber()
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_name").value("Football")
+            MockMvcResultMatchers.jsonPath("$.sportName").value("Football")
         ).andExpect(
             MockMvcResultMatchers.jsonPath("$.league").value("National Football League")
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("logo_url").value("cdowd")
+            MockMvcResultMatchers.jsonPath("logoUrl").value("cdowd")
         );
     }
 
@@ -89,13 +89,13 @@ public class SportControllerIntegrationTest {
             MockMvcRequestBuilders.get("/sports")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$[0].sport_id").isNumber()
+            MockMvcResultMatchers.jsonPath("$[0].sportId").isNumber()
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$[0].sport_name").value("Football")
+            MockMvcResultMatchers.jsonPath("$[0].sportName").value("Football")
         ).andExpect(
             MockMvcResultMatchers.jsonPath("$[0].league").value("National Football League")
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("[0].logo_url").value("cdowd")
+            MockMvcResultMatchers.jsonPath("[0].logoUrl").value("cdowd")
         );
     }
 
@@ -105,7 +105,7 @@ public class SportControllerIntegrationTest {
         sportService.save(sport);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/sports/" + sport.getSport_id())
+            MockMvcRequestBuilders.get("/sports/" + sport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -126,16 +126,16 @@ public class SportControllerIntegrationTest {
         SportEntity savedSport = sportService.save(sport);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.get("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+            MockMvcResultMatchers.jsonPath("$.sportId").value(savedSport.getSportId())
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_name").value("Football")
+            MockMvcResultMatchers.jsonPath("$.sportName").value("Football")
         ).andExpect(
             MockMvcResultMatchers.jsonPath("$.league").value("National Football League")
         ).andExpect(
-            MockMvcResultMatchers.jsonPath(".logo_url").value("cdowd")
+            MockMvcResultMatchers.jsonPath(".logoUrl").value("cdowd")
         );
     }
     
@@ -148,7 +148,7 @@ public class SportControllerIntegrationTest {
         String sportDtoJson = objectMapper.writeValueAsString(sportDto);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.put("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(sportDtoJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -172,22 +172,22 @@ public class SportControllerIntegrationTest {
         SportEntity savedSport = sportService.save(sport);
 
         SportDto sportDto = TestDataUtil.createTestSportDto();
-        sportDto.setSport_id(savedSport.getSport_id());
+        sportDto.setSportId(savedSport.getSportId());
 
         String sportDtoUpdateJson = objectMapper.writeValueAsString(sportDto);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.put("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(sportDtoUpdateJson)
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+            MockMvcResultMatchers.jsonPath("$.sportId").value(savedSport.getSportId())
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_name").value(sportDto.getSport_name())
+            MockMvcResultMatchers.jsonPath("$.sportName").value(sportDto.getSportName())
         ).andExpect(
             MockMvcResultMatchers.jsonPath("$.league").value(sportDto.getLeague())
         ).andExpect(
-            MockMvcResultMatchers.jsonPath(".logo_url").value(sportDto.getLogo_url())
+            MockMvcResultMatchers.jsonPath(".logoUrl").value(sportDto.getLogoUrl())
         );
     }
 
@@ -197,11 +197,11 @@ public class SportControllerIntegrationTest {
         SportEntity savedSport = sportService.save(sport);
 
         SportDto sportDto = TestDataUtil.createTestSportDto();
-        sportDto.setSport_name("UPDATED");
+        sportDto.setSportName("UPDATED");
         String sportDtoJson = objectMapper.writeValueAsString(sportDto);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(sportDtoJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -213,21 +213,21 @@ public class SportControllerIntegrationTest {
         SportEntity savedSport = sportService.save(sport);
 
         SportDto sportDto = TestDataUtil.createTestSportDto();
-        sportDto.setSport_name("UPDATED");
+        sportDto.setSportName("UPDATED");
         String sportDtoJson = objectMapper.writeValueAsString(sportDto);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.patch("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(sportDtoJson)
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+            MockMvcResultMatchers.jsonPath("$.sportId").value(savedSport.getSportId())
         ).andExpect(
-            MockMvcResultMatchers.jsonPath("$.sport_name").value("UPDATED")
+            MockMvcResultMatchers.jsonPath("$.sportName").value("UPDATED")
         ).andExpect(
             MockMvcResultMatchers.jsonPath("$.league").value(sportDto.getLeague())
         ).andExpect(
-            MockMvcResultMatchers.jsonPath(".logo_url").value(sportDto.getLogo_url())
+            MockMvcResultMatchers.jsonPath(".logoUrl").value(sportDto.getLogoUrl())
         );
     }
 
@@ -237,7 +237,7 @@ public class SportControllerIntegrationTest {
         SportEntity savedSport = sportService.save(sport);
 
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/sports/" + savedSport.getSport_id())
+            MockMvcRequestBuilders.delete("/sports/" + savedSport.getSportId())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }

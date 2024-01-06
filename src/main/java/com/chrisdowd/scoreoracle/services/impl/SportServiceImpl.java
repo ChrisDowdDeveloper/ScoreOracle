@@ -22,13 +22,13 @@ public class SportServiceImpl implements SportService{
 
     @Override
     public SportEntity save(SportEntity sportEntity) {
-        if(sportEntity.getSport_id() != null) {
-            return sportRepository.findById(sportEntity.getSport_id()).map(existingSport -> {
-                existingSport.setSport_name(sportEntity.getSport_name());
+        if(sportEntity.getSportId() != null) {
+            return sportRepository.findById(sportEntity.getSportId()).map(existingSport -> {
+                existingSport.setSportName(sportEntity.getSportName());
                 existingSport.setLeague(sportEntity.getLeague());
-                existingSport.setLogo_url(sportEntity.getLogo_url());
+                existingSport.setLogoUrl(sportEntity.getLogoUrl());
                 return sportRepository.save(existingSport);
-            }).orElseThrow(() -> new RuntimeException("Sport not found with id: " + sportEntity.getSport_id()));
+            }).orElseThrow(() -> new RuntimeException("Sport not found with id: " + sportEntity.getSportId()));
         } else {
             return sportRepository.save(sportEntity);
         }
@@ -40,30 +40,30 @@ public class SportServiceImpl implements SportService{
     }
 
     @Override
-    public Optional<SportEntity> findOne(Long sport_id) {
-        return sportRepository.findById(sport_id);
+    public Optional<SportEntity> findOne(Long sportId) {
+        return sportRepository.findById(sportId);
     }
 
     @Override
-    public boolean isExists(Long sport_id) {
-        return sportRepository.existsById(sport_id);
+    public boolean isExists(Long sportId) {
+        return sportRepository.existsById(sportId);
     }
 
     @Override
-    public SportEntity partialUpdate(Long sport_id, SportEntity sportEntity) {
-        sportEntity.setSport_id(sport_id);
+    public SportEntity partialUpdate(Long sportId, SportEntity sportEntity) {
+        sportEntity.setSportId(sportId);
         
-        return sportRepository.findById(sport_id).map(existingSport -> {
-            Optional.ofNullable(sportEntity.getSport_name()).ifPresent(existingSport::setSport_name);
+        return sportRepository.findById(sportId).map(existingSport -> {
+            Optional.ofNullable(sportEntity.getSportName()).ifPresent(existingSport::setSportName);
             Optional.ofNullable(sportEntity.getLeague()).ifPresent(existingSport::setLeague);
-            Optional.ofNullable(sportEntity.getLogo_url()).ifPresent(existingSport::setLogo_url);
+            Optional.ofNullable(sportEntity.getLogoUrl()).ifPresent(existingSport::setLogoUrl);
             return sportRepository.save(existingSport);
         }).orElseThrow(() -> new RuntimeException("Sport does not exist"));
     }
 
     @Override
-    public void delete(Long sport_id) {
-        sportRepository.deleteById(sport_id);
+    public void delete(Long sportId) {
+        sportRepository.deleteById(sportId);
     }
 
 
