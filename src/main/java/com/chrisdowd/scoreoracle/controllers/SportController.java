@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,12 @@ public class SportController {
         SportEntity sportEntity = sportMapper.mapFrom(sportDto);
         SportEntity savedSportEntity = sportService.partialUpdate(sport_id, sportEntity);
         return new ResponseEntity<>(sportMapper.mapTo(savedSportEntity), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/sports/{sport_id}")
+    public ResponseEntity<Void> deleteSport(@PathVariable("sport_id") Long sport_id) {
+        sportService.delete(sport_id);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -17,4 +17,6 @@ public interface SportService {
 
     SportEntity partialUpdate(Long sport_id, SportEntity sportEntity);
 
+    void delete(Long sport_id);
+
 }

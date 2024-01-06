@@ -230,4 +230,15 @@ public class SportControllerIntegrationTest {
             MockMvcResultMatchers.jsonPath(".logo_url").value(sportDto.getLogo_url())
         );
     }
+
+    @Test
+    public void testThatDeleteSportReturnsHttp204WhenDeleted() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }

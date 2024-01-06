@@ -89,4 +89,14 @@ public class SportIntegrationTest {
         assertTrue(result.isPresent());
         assertEquals(sport, result.get());
     }
+
+    @Test
+    public void testThatDeleteRemovesSport() {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        underTest.save(sport);
+
+        underTest.deleteById(sport.getSport_id());
+        Optional<SportEntity> result = underTest.findById(sport.getSport_id());
+        assertTrue(result.isEmpty());
+    }
 }

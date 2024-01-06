@@ -61,5 +61,10 @@ public class SportServiceImpl implements SportService{
         }).orElseThrow(() -> new RuntimeException("Sport does not exist"));
     }
 
+    @Override
+    public void delete(Long sport_id) {
+        sportRepository.deleteById(sport_id);
+    }
+
 
 }
