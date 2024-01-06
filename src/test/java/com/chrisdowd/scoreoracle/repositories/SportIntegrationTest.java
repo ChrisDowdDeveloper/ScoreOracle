@@ -24,10 +24,10 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class SportIntegrationTest {
     
-    private final SportRespository underTest;
+    private final SportRepository underTest;
 
     @Autowired
-    public SportIntegrationTest(SportRespository underTest) {
+    public SportIntegrationTest(SportRepository underTest) {
         this.underTest = underTest;
     }
 

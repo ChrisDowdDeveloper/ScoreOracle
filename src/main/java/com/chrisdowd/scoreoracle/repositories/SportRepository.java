@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
 
 @Repository
-public interface SportRespository extends CrudRepository<SportEntity, Long>{
+public interface SportRepository extends CrudRepository<SportEntity, Long>{
     
 }

@@ -1,10 +1,7 @@
 package com.chrisdowd.scoreoracle.controllers;
 
-import javax.print.attribute.standard.Media;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,6 +68,33 @@ public class SportControllerIntegrationTest {
             MockMvcResultMatchers.jsonPath("$.league").value("National Football League")
         ).andExpect(
             MockMvcResultMatchers.jsonPath("logo_url").value("cdowd")
+        );
+    }
+
+    @Test
+    public void testThatGetAllSportsSuccessfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/sports")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatGetAllSportsSuccessfullyReturnsListOfSports() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        sportService.save(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/sports")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$[0].sport_id").isNumber()
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$[0].sport_name").value("Football")
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$[0].league").value("National Football League")
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("[0].logo_url").value("cdowd")
         );
     }
 }

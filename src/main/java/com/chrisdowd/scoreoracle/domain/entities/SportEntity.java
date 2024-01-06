@@ -1,5 +1,6 @@
 package com.chrisdowd.scoreoracle.domain.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class SportEntity {
 
     private String sport_name;
 
+    @Column(unique = true)
     private String league;
 
     private String logo_url;
