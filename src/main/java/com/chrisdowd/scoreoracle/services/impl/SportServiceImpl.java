@@ -1,6 +1,7 @@
 package com.chrisdowd.scoreoracle.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,5 +28,10 @@ public class SportServiceImpl implements SportService{
     @Override
     public List<SportEntity> findAll() {
         return StreamSupport.stream(sportRespository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<SportEntity> findOne(Long sport_id) {
+        return sportRespository.findById(sport_id);
     }
 }

@@ -1,6 +1,7 @@
 package com.chrisdowd.scoreoracle.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.chrisdowd.scoreoracle.TestDataUtil;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
@@ -25,6 +28,9 @@ import jakarta.transaction.Transactional;
 public class SportIntegrationTest {
     
     private final SportRepository underTest;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     public SportIntegrationTest(SportRepository underTest) {
@@ -58,5 +64,19 @@ public class SportIntegrationTest {
         assertEquals(3, resultList.size());
         List<SportEntity> expectedSports = Arrays.asList(sportA, sportB, sportC);
         assertEquals(expectedSports, resultList);
+    }
+
+    @Test
+    public void testThatSportsCanNotHaveSameLeague() {
+        SportEntity sportA = TestDataUtil.createTestSportA();
+        underTest.save(sportA);
+        entityManager.flush();
+
+        SportEntity sportB = TestDataUtil.createTestSportA();
+        
+        assertThrows(ConstraintViolationException.class, () -> {
+            underTest.save(sportB);
+            entityManager.flush();
+        });
     }
 }

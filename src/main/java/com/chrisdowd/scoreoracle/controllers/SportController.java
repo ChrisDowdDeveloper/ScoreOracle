@@ -1,11 +1,13 @@
 package com.chrisdowd.scoreoracle.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +40,14 @@ public class SportController {
     public List<SportDto> listSports() {
         List<SportEntity> sports = sportService.findAll();
         return sports.stream().map(sportMapper::mapTo).collect(Collectors.toList());
+    }
+
+    @GetMapping("/sports/{sport_id}")
+    public ResponseEntity<SportDto> getSportById(@PathVariable("sport_id") Long sport_id) {
+        Optional<SportEntity> foundSport = sportService.findOne(sport_id);
+        return foundSport.map(sportEntity -> {
+            SportDto sportDto = sportMapper.mapTo(sportEntity);
+            return new ResponseEntity<>(sportDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

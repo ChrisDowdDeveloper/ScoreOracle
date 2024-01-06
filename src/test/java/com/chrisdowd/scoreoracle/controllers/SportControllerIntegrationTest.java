@@ -97,4 +97,44 @@ public class SportControllerIntegrationTest {
             MockMvcResultMatchers.jsonPath("[0].logo_url").value("cdowd")
         );
     }
+
+    @Test
+    public void testThatGetOneSportSuccessfullyReturnsHttp200() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        sportService.save(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/sports/" + sport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatGetOneSportReturnsHttpStatus404WhenSportDoesNotExist() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        sportService.save(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/sports/154616541651")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testThatGetSportReturnsSportWhenSportExists() throws Exception {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        SportEntity savedSport = sportService.save(sport);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/sports/" + savedSport.getSport_id())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_id").value(savedSport.getSport_id())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.sport_name").value("Football")
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.league").value("National Football League")
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath(".logo_url").value("cdowd")
+        );
+    }
 }
