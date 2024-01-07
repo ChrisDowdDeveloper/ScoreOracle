@@ -180,4 +180,35 @@ public class GameControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatPartialUpdateExistingGameReturnsHttp200() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        gameService.save(game);
+
+        GameDto gameDto = TestDataUtil.createTestGameDto(null, null, null);
+        gameDto.setHomeTeamScore(56);
+        String gameDtoJson = objectMapper.writeValueAsString(gameDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/games/" + game.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gameDtoJson)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.gameId").value(game.getGameId())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.homeTeamScore").value(56)
+        );
+    }
+
+    @Test
+    public void testThatDeleteGameReturnsHttp204WhenDeleted() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        GameEntity savedGame = gameService.save(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/games/" + savedGame.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
 }

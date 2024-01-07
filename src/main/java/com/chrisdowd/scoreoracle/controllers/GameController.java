@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,6 +65,24 @@ public class GameController {
         GameEntity gameEntity = gameMapper.mapFrom(gameDto);
         GameEntity savedGame = gameService.save(gameEntity);
         return new ResponseEntity<>(gameMapper.mapTo(savedGame), HttpStatus.OK);
+    }
+
+    @PatchMapping("/games/{gameId}")
+    public ResponseEntity<GameDto> partialUpdate(@PathVariable("gameId") Long gameId, @RequestBody GameDto gameDto) {
+
+        if(!gameService.isExists(gameId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        GameEntity gameEntity = gameMapper.mapFrom(gameDto);
+        GameEntity updatedGame = gameService.partialUpdate(gameId, gameEntity);
+        return new ResponseEntity<>(gameMapper.mapTo(updatedGame), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/games/{gameId}")
+    public ResponseEntity<Void> deleteGame(@PathVariable("gameId") Long gameId) {
+        gameService.deleteGame(gameId);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 

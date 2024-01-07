@@ -39,5 +39,25 @@ public class GameServiceImpl implements GameService {
         return gameRepository.existsById(gameId);
     }
 
+    @Override
+    public GameEntity partialUpdate(Long gameId, GameEntity gameEntity) {
+        gameEntity.setGameId(gameId);
+
+        return gameRepository.findById(gameId).map(existingGame -> {
+            Optional.ofNullable(gameEntity.getHomeTeam()).ifPresent(existingGame::setHomeTeam);
+            Optional.ofNullable(gameEntity.getAwayTeam()).ifPresent(existingGame::setAwayTeam);
+            Optional.ofNullable(gameEntity.getGameDate()).ifPresent(existingGame::setGameDate);
+            Optional.ofNullable(gameEntity.getSport()).ifPresent(existingGame::setSport);
+            Optional.ofNullable(gameEntity.getHomeTeamScore()).ifPresent(existingGame::setHomeTeamScore);
+            Optional.ofNullable(gameEntity.getAwayTeamScore()).ifPresent(existingGame::setAwayTeamScore);
+            Optional.ofNullable(gameEntity.getStatus()).ifPresent(existingGame::setStatus);
+            return gameRepository.save(existingGame);
+        }).orElseThrow(() -> new RuntimeException("Game does not exist"));
+    }
+
+    @Override
+    public void deleteGame(Long gameId) {
+        gameRepository.deleteById(gameId);
+    }
 
 }

@@ -16,5 +16,9 @@ public interface GameService {
     Optional<GameEntity> findOne(Long gameId);
 
     boolean isExists(Long gameId);
+
+    GameEntity partialUpdate(Long gameId, GameEntity gameEntity);
+
+    void deleteGame(Long gameId);
     
 }

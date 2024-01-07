@@ -87,4 +87,16 @@ public class GameIntegrationTest {
         assertEquals(game, result.get());
     }
 
+    @Test
+    public void testThatGameCanBeDeleted() {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        TeamEntity teamA = TestDataUtil.createTestTeamA(sport);
+        TeamEntity teamB = TestDataUtil.createTestTeamB(sport);
+        GameEntity game = TestDataUtil.createTestGameA(teamA, teamB, sport);
+        underTest.save(game);
+        underTest.deleteById(game.getGameId());
+        Optional<GameEntity> result = underTest.findById(game.getGameId());
+        assertTrue(result.isEmpty());
+    }
+
 }
