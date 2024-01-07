@@ -1,8 +1,10 @@
 package com.chrisdowd.scoreoracle;
 
 import com.chrisdowd.scoreoracle.domain.dto.SportDto;
+import com.chrisdowd.scoreoracle.domain.dto.TeamDto;
 import com.chrisdowd.scoreoracle.domain.dto.UserDto;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
+import com.chrisdowd.scoreoracle.domain.entities.TeamEntity;
 import com.chrisdowd.scoreoracle.domain.entities.UserEntity;
 
 public class TestDataUtil {
@@ -71,6 +73,41 @@ public class TestDataUtil {
             .sportName("Football")
             .league("National Football League")
             .logoUrl("cdowd")
+            .build();
+    }
+
+    public static TeamEntity createTestTeamA(final SportEntity sport) {
+        return TeamEntity.builder()
+            .teamCity("New Orlean")
+            .teamName("Saints")
+            .sport(sport)
+            .logoUrl("cdowd")
+            .build();
+    }
+
+    public static TeamEntity createTestTeamB(final SportEntity sport) {
+        return TeamEntity.builder()
+            .teamCity("Milwaukee")
+            .teamName("Bucks")
+            .sport(sport)
+            .logoUrl("cdowd")
+            .build();
+    }
+
+    public static TeamEntity createTestTeamC(final SportEntity sport) {
+        return TeamEntity.builder()
+            .teamCity("St. Louis")
+            .teamName("Blues")
+            .sport(sport)
+            .logoUrl("cdowd")
+            .build();
+    }
+
+    public static TeamDto createTestTeamDto(final SportDto sport) {
+        return TeamDto.builder()
+            .teamCity("Anaheim")
+            .teamName("Ducks")
+            .sport(sport)
             .build();
     }
 }
