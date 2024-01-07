@@ -1,8 +1,14 @@
 package com.chrisdowd.scoreoracle;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
+import com.chrisdowd.scoreoracle.domain.dto.GameDto;
 import com.chrisdowd.scoreoracle.domain.dto.SportDto;
 import com.chrisdowd.scoreoracle.domain.dto.TeamDto;
 import com.chrisdowd.scoreoracle.domain.dto.UserDto;
+import com.chrisdowd.scoreoracle.domain.entities.GameEntity;
 import com.chrisdowd.scoreoracle.domain.entities.SportEntity;
 import com.chrisdowd.scoreoracle.domain.entities.TeamEntity;
 import com.chrisdowd.scoreoracle.domain.entities.UserEntity;
@@ -108,6 +114,62 @@ public class TestDataUtil {
             .teamCity("Anaheim")
             .teamName("Ducks")
             .sport(sport)
+            .build();
+    }
+
+    public static GameEntity createTestGameA(final TeamEntity teamA, final TeamEntity teamB, final SportEntity sport) {
+        LocalDate localDate = LocalDate.of(2024, 1, 7);
+        Date gameDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return GameEntity.builder()
+            .homeTeam(teamA)
+            .awayTeam(teamB)
+            .gameDate(gameDate)
+            .sport(sport)
+            .homeTeamScore(0)
+            .awayTeamScore(0)
+            .status("not started")
+            .build();
+    }
+
+    public static GameEntity createTestGameB(final TeamEntity teamA, final TeamEntity teamB, final SportEntity sport) {
+        LocalDate localDate = LocalDate.of(2024, 1, 7);
+        Date gameDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return GameEntity.builder()
+            .homeTeam(teamA)
+            .awayTeam(teamB)
+            .gameDate(gameDate)
+            .sport(sport)
+            .homeTeamScore(0)
+            .awayTeamScore(0)
+            .status("not started")
+            .build();
+    }
+
+    public static GameEntity createTestGameC(final TeamEntity teamA, final TeamEntity teamB, final SportEntity sport) {
+        LocalDate localDate = LocalDate.of(2024, 1, 7);
+        Date gameDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return GameEntity.builder()
+            .homeTeam(teamA)
+            .awayTeam(teamB)
+            .gameDate(gameDate)
+            .sport(sport)
+            .homeTeamScore(0)
+            .awayTeamScore(0)
+            .status("not started")
+            .build();
+    }
+
+    public static GameDto createTestGameDto(final TeamDto teamA, final TeamDto teamB, final SportDto sport) {
+        LocalDate localDate = LocalDate.of(2024, 1, 7);
+        Date gameDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return GameDto.builder()
+            .homeTeam(teamA)
+            .awayTeam(teamB)
+            .gameDate(gameDate)
+            .sport(sport)
+            .homeTeamScore(0)
+            .awayTeamScore(0)
+            .status("not started")
             .build();
     }
 }

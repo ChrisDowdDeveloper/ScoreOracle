@@ -33,7 +33,7 @@ public class TeamController {
     }
 
     @PostMapping("/teams")
-    public ResponseEntity<TeamDto> createUpdateSong(@RequestBody TeamDto teamDto) {
+    public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto) {
 
         TeamEntity teamEntity = teamMapper.mapFrom(teamDto);
         TeamEntity savedTeamEntity = teamService.save(teamEntity);
