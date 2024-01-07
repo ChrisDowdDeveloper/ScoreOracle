@@ -67,4 +67,29 @@ public class GameControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatGetAllGamesSuccessfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/games")
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatGetAllGamesSuccessfullyReturnsListOfGames() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        gameService.save(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/games")
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.content[0].homeTeamScore").isNumber()
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.content[0].awayTeamScore").isNumber()
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.content[0].status").value("not started")
+        );
+    }
+
 }
