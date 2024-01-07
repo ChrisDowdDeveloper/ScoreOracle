@@ -1,5 +1,7 @@
 package com.chrisdowd.scoreoracle.services.impl;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public Page<GameEntity> findAll(Pageable pageable) {
         return gameRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<GameEntity> findOne(Long gameId) {
+        return gameRepository.findById(gameId);
     }
 
 }

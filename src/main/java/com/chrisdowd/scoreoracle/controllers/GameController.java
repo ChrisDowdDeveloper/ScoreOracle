@@ -1,10 +1,13 @@
 package com.chrisdowd.scoreoracle.controllers;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +40,15 @@ public class GameController {
     public Page<GameDto> listGames(Pageable pageable) {
         Page<GameEntity> games = gameService.findAll(pageable);
         return games.map(gameMapper::mapTo);
+    }
+
+    @GetMapping("/games/{gameId}")
+    public ResponseEntity<GameDto> getGame(@PathVariable("gameId") Long gameId) {
+        Optional<GameEntity> foundGame = gameService.findOne(gameId);
+        return foundGame.map(gameEntity -> {
+            GameDto gameDto = gameMapper.mapTo(gameEntity);
+            return new ResponseEntity<>(gameDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

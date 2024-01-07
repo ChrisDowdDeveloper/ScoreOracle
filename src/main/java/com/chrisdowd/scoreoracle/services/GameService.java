@@ -1,5 +1,7 @@
 package com.chrisdowd.scoreoracle.services;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,5 +12,7 @@ public interface GameService {
     GameEntity save(GameEntity gameEntity);
 
     Page<GameEntity> findAll(Pageable pageable);
+
+    Optional<GameEntity> findOne(Long gameId);
     
 }

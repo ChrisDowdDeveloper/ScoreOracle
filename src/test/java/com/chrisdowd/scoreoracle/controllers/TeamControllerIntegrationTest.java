@@ -118,7 +118,7 @@ public class TeamControllerIntegrationTest {
     }
 
     @Test
-    public void testThatGetTeamReturnsSportWhenSportExists() throws Exception {
+    public void testThatGetTeamReturnsTeamWhenTeamExists() throws Exception {
         TeamEntity team = TestDataUtil.createTestTeamA(null);
         TeamEntity savedTeam = teamService.save(team);
 

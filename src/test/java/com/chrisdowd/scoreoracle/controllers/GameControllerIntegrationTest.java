@@ -92,4 +92,42 @@ public class GameControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatGetOneTeamSuccessfullyReturnsHttp200() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        gameService.save(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/games/" + game.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatGetOneTeamReturnsHttpStatus404WhenGameDoesNotExist() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        gameService.save(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/games/2656165159661")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testThatGetOneGameReturnsGameWhenExists() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        GameEntity savedGame = gameService.save(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/games/" + savedGame.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.homeTeamScore").isNumber()
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.awayTeamScore").isNumber()
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.status").value("not started")
+        );
+    }
+
 }
