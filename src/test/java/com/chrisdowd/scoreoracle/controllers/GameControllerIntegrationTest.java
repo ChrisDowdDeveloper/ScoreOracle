@@ -130,4 +130,54 @@ public class GameControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatFullUpdateGameSuccessfullyReturnsHttp200() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        GameEntity savedGame = gameService.save(game);
+
+        GameDto gameDto = TestDataUtil.createTestGameDto(null, null, null);
+        String gameDtoJson = objectMapper.writeValueAsString(gameDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/games/" + savedGame.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gameDtoJson)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatFullUpdateGameReturnsHttpStatus404WhenGameDoesNotExist() throws Exception {
+        GameDto game = TestDataUtil.createTestGameDto(null, null, null);
+        String gameJson = objectMapper.writeValueAsString(game);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/games/51263515")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gameJson)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testThatFullUpdateUpdatesExistingGame() throws Exception {
+        GameEntity game = TestDataUtil.createTestGameA(null, null, null);
+        GameEntity savedGame = gameService.save(game);
+
+        GameDto gameDto = TestDataUtil.createTestGameDto(null, null, null);
+        gameDto.setGameId(savedGame.getGameId());
+
+        String gameDtoUpdateJson = objectMapper.writeValueAsString(gameDto);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/games/" + savedGame.getGameId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gameDtoUpdateJson)
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.homeTeamScore").value(savedGame.getHomeTeamScore())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.awayTeamScore").value(savedGame.getAwayTeamScore())
+        ).andExpect(
+            MockMvcResultMatchers.jsonPath("$.status").value(savedGame.getStatus())
+        );
+    }
+
 }

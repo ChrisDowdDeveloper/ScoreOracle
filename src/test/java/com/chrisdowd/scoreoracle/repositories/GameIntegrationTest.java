@@ -72,4 +72,19 @@ public class GameIntegrationTest {
         assertEquals(expectedGames, resultList);
     }
 
+    @Test
+    public void testThatGameCanBeUpdated() {
+        SportEntity sport = TestDataUtil.createTestSportA();
+        TeamEntity teamA = TestDataUtil.createTestTeamA(sport);
+        TeamEntity teamB = TestDataUtil.createTestTeamB(sport);
+        GameEntity game = TestDataUtil.createTestGameA(teamA, teamB, sport);
+        underTest.save(game);
+        TeamEntity teamC = TestDataUtil.createTestTeamC(sport);
+        game.setAwayTeam(teamC);
+        underTest.save(game);
+        Optional<GameEntity> result = underTest.findById(game.getGameId());
+        assertTrue(result.isPresent());
+        assertEquals(game, result.get());
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,5 +51,19 @@ public class GameController {
             return new ResponseEntity<>(gameDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @PutMapping("/games/{gameId}")
+    public ResponseEntity<GameDto> fullUpdateGame(@PathVariable("gameId") Long gameId, @RequestBody GameDto gameDto) {
+
+        if(!gameService.isExists(gameId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        gameDto.setGameId(gameId);
+        GameEntity gameEntity = gameMapper.mapFrom(gameDto);
+        GameEntity savedGame = gameService.save(gameEntity);
+        return new ResponseEntity<>(gameMapper.mapTo(savedGame), HttpStatus.OK);
+    }
+
 
 }

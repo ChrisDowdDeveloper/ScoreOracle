@@ -14,5 +14,7 @@ public interface GameService {
     Page<GameEntity> findAll(Pageable pageable);
 
     Optional<GameEntity> findOne(Long gameId);
+
+    boolean isExists(Long gameId);
     
 }
